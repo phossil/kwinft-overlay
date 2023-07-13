@@ -7,13 +7,13 @@
 
 mkDerivation rec {
   pname = "kwinft";
-  version = "5.26.0";
+  version = "5.27.0";
 
   src = fetchFromGitLab {
     owner = "kwinft";
     repo = "kwinft";
-    rev = "kwinft@5.26.0";
-    hash = "sha256-3pELGBCws70sTnl1dBKpTj69RrLO15Gio7+yYqCxpaY=";
+    rev = "kwinft@5.27.0";
+    sha256 = "0asy6z4crcclbq5r30mid6rp5xyzq67a4i2sb385m0yiwcd4h91d";
   };
 
   outputs = [ "out" "dev" ];

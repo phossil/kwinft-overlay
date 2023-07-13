@@ -3,13 +3,13 @@
 
 stdenv.mkDerivation rec {
   pname = "wrapland";
-  version = "5.26.0";
+  version = "5.27.0";
 
   src = fetchFromGitLab {
     owner = "kwinft";
     repo = "wrapland";
-    rev = "wrapland@0.526.0";
-    hash = "sha256-WvVv5JiOPwPWN+PUD6mgklh3TZnUUt/yO0ZdnaiD51c=";
+    rev = "wrapland@0.527.0";
+    sha256 = "13gvhc2pgkrcq2h04f3kxp8dj358kg9kdnf7a2b1i8x14aa7ijac";
   };
 
   nativeBuildInputs = [ extra-cmake-modules wrapQtAppsHook ];

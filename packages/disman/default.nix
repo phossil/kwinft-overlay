@@ -3,13 +3,13 @@
 
 stdenv.mkDerivation rec {
   pname = "disman";
-  version = "5.26.0";
+  version = "5.27.0";
 
   src = fetchFromGitLab {
     owner = "kwinft";
     repo = "disman";
-    rev = "disman@0.526.0";
-    hash = "sha256-kpHoJnnCUJk5ZJVzSmCALRbbihGw4owKWdMyd+jigGU=";
+    rev = "disman@0.527.0";
+    sha256 = "0zx1md551iypkqh1g39rhwyndca5yh7rck3891djgq2y7xn31d68";
   };
 
   nativeBuildInputs = [ extra-cmake-modules wrapQtAppsHook ];

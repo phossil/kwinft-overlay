@@ -3,13 +3,13 @@
 
 stdenv.mkDerivation rec {
   pname = "kdisplay";
-  version = "5.26.0";
+  version = "5.27.0";
 
   src = fetchFromGitLab {
     owner = "kwinft";
     repo = "kdisplay";
-    rev = "kdisplay@5.26.0";
-    hash = "sha256-eiBC9er5JRs96NZQw25XIn42bmqCtzn+ivDuQ7MAxaM=";
+    rev = "kdisplay@5.27.0";
+    sha256 = "02ghmcnjdrp7vv91qdyikcj9cl8kdf3cvsgjnk5i0x4n2plmcm3r";
   };
 
   nativeBuildInputs = [ extra-cmake-modules wrapQtAppsHook ];
