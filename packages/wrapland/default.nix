@@ -1,5 +1,11 @@
-{ stdenv, lib, fetchFromGitLab, extra-cmake-modules, wrapQtAppsHook, wayland
-, wayland-protocols }:
+{ stdenv
+, lib
+, fetchFromGitLab
+, extra-cmake-modules
+, wrapQtAppsHook
+, wayland
+, wayland-protocols
+}:
 
 stdenv.mkDerivation rec {
   pname = "wrapland";

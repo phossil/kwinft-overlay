@@ -1,5 +1,12 @@
-{ stdenv, lib, fetchFromGitLab, extra-cmake-modules, wrapQtAppsHook, qtx11extras
-, plasma-framework, wrapland }:
+{ stdenv
+, lib
+, fetchFromGitLab
+, extra-cmake-modules
+, wrapQtAppsHook
+, qtx11extras
+, plasma-framework
+, wrapland
+}:
 
 stdenv.mkDerivation rec {
   pname = "disman";

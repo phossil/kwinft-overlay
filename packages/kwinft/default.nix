@@ -1,9 +1,39 @@
-{ mkDerivation, lib, fetchFromGitLab, extra-cmake-modules, wrapQtAppsHook
-, kdoctools, plasma-framework, qtx11extras, kidletime, kcmutils, knewstuff
-, kdecoration, kscreenlocker, wrapland, disman, kdisplay, wayland, libinput
-, wlroots, xcb-util-cursor, pixman, epoxy, breeze-qt5, libcap
-, libqaccessibilityclient, xwayland, libICE, libSM, kirigami2, xorg, valgrind
-, qtdeclarative, mesa, vulkan-loader, seatd }:
+{ mkDerivation
+, lib
+, fetchFromGitLab
+, extra-cmake-modules
+, wrapQtAppsHook
+, kdoctools
+, plasma-framework
+, qtx11extras
+, kidletime
+, kcmutils
+, knewstuff
+, kdecoration
+, kscreenlocker
+, wrapland
+, disman
+, kdisplay
+, wayland
+, libinput
+, wlroots
+, xcb-util-cursor
+, pixman
+, epoxy
+, breeze-qt5
+, libcap
+, libqaccessibilityclient
+, xwayland
+, libICE
+, libSM
+, kirigami2
+, xorg
+, valgrind
+, qtdeclarative
+, mesa
+, vulkan-loader
+, seatd
+}:
 
 mkDerivation rec {
   pname = "kwinft";

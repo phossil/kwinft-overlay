@@ -1,5 +1,13 @@
-{ stdenv, lib, fetchFromGitLab, extra-cmake-modules, wrapQtAppsHook, disman
-, plasma-framework, qtsensors, kcmutils }:
+{ stdenv
+, lib
+, fetchFromGitLab
+, extra-cmake-modules
+, wrapQtAppsHook
+, disman
+, plasma-framework
+, qtsensors
+, kcmutils
+}:
 
 stdenv.mkDerivation rec {
   pname = "kdisplay";
