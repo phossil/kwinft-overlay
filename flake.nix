@@ -22,7 +22,5 @@
 
       # make the flake look pretty :)
       formatter.${system} = pkgs.nixpkgs-fmt;
-    } // {
-      overlays.default = import ./overlay.nix;
     };
 }
