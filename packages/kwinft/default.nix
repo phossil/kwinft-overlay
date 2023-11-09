@@ -4,38 +4,73 @@
 , extra-cmake-modules
 , wrapQtAppsHook
 , kdoctools
-, plasma-framework
-, qtx11extras
-, kidletime
-, kcmutils
-, knewstuff
-, kdecoration
-, kscreenlocker
-, wrapland
-, disman
-, kdisplay
-, wayland
-, libinput
-, wlroots
-, xcb-util-cursor
-, pixman
-, epoxy
-, breeze-qt5
-, libcap
-, libqaccessibilityclient
-, xwayland
+, fetchpatch
+, libepoxy
+, lcms2
 , libICE
 , libSM
+, libcap
+, libdrm
+, libinput
+, libxkbcommon
+, mesa
+, pipewire
+, udev
+, wayland
+, xcb-util-cursor
+, xwayland
+, plasma-wayland-protocols
+, wayland-protocols
+, libxcvt
+, qtdeclarative
+, qtmultimedia
+, qtquickcontrols2
+, qtscript
+, qtsensors
+, qtvirtualkeyboard
+, qtx11extras
+, breeze-qt5
+, kactivities
+, kcompletion
+, kcmutils
+, kconfig
+, kconfigwidgets
+, kcoreaddons
+, kcrash
+, kdeclarative
+, kdecoration
+, kglobalaccel
+, ki18n
+, kiconthemes
+, kidletime
+, kinit
+, kio
+, knewstuff
+, knotifications
+, kpackage
+, krunner
+, kscreenlocker
+, kservice
+, kwayland
+, kwidgetsaddons
+, kwindowsystem
+, kxmlgui
+, plasma-framework
+, libqaccessibilityclient
+, wrapland
+, disman
+, wlroots
+, pixman
 , kirigami2
 , xorg
 , valgrind
-, qtdeclarative
-, mesa
 , vulkan-loader
 , seatd
 }:
 
-mkDerivation rec {
+# TODO (ttuegel): investigate qmlplugindump failure
+
+mkDerivation {
   pname = "kwinft";
   version = "5.27.0";
 
@@ -46,7 +81,80 @@ mkDerivation rec {
     sha256 = "0asy6z4crcclbq5r30mid6rp5xyzq67a4i2sb385m0yiwcd4h91d";
   };
 
+  nativeBuildInputs = [ extra-cmake-modules wrapQtAppsHook kdoctools ];
+
+  buildInputs = [
+    libepoxy
+    lcms2
+    libICE
+    libSM
+    libcap
+    libdrm
+    libinput
+    libxkbcommon
+    mesa
+    pipewire
+    udev
+    wayland
+    xcb-util-cursor
+    xwayland
+    libxcvt
+    plasma-wayland-protocols
+    wayland-protocols
+
+    qtdeclarative
+    qtmultimedia
+    qtquickcontrols2
+    qtscript
+    qtsensors
+    qtvirtualkeyboard
+    qtx11extras
+
+    breeze-qt5
+    kactivities
+    kcmutils
+    kcompletion
+    kconfig
+    kconfigwidgets
+    kcoreaddons
+    kcrash
+    kdeclarative
+    kdecoration
+    kglobalaccel
+    ki18n
+    kiconthemes
+    kidletime
+    kinit
+    kio
+    knewstuff
+    knotifications
+    kpackage
+    krunner
+    kscreenlocker
+    kservice
+    kwayland
+    kwidgetsaddons
+    kwindowsystem
+    kxmlgui
+    plasma-framework
+    libqaccessibilityclient
+
+    wrapland
+    disman
+    wlroots
+    pixman
+    kirigami2
+    xorg.libXdmcp
+    xorg.xcbutilerrors
+    valgrind
+    vulkan-loader
+    seatd
+  ];
   outputs = [ "out" "dev" ];
+
+  postPatch = ''
+    patchShebangs src/effects/strip-effect-metadata.py
+  '';
 
   patches = [
     ./follow-symlinks.patch
@@ -55,48 +163,18 @@ mkDerivation rec {
     ./xwayland.patch
   ];
 
-  postPatch = ''
-    patchShebangs effect/effects/strip-effect-metadata.py
-    # TODO: add a patch if this is my fault, open an issue if it's their fault
-    sed -i '540i \ \ \ \ KF5::Plasma' CMakeLists.txt
-  '';
-
-  nativeBuildInputs = [ extra-cmake-modules wrapQtAppsHook kdoctools ];
-
-  buildInputs = [
-    breeze-qt5
-    disman
-    epoxy
-    kcmutils
-    kdecoration
-    kdisplay
-    kidletime
-    kirigami2
-    knewstuff
-    kscreenlocker
-    libICE
-    libSM
-    libcap
-    libinput
-    libqaccessibilityclient
-    mesa
-    pixman
-    plasma-framework
-    qtdeclarative
-    qtx11extras
-    seatd
-    valgrind
-    vulkan-loader
-    wayland
-    wlroots
-    wrapland
-    xcb-util-cursor
-    xorg.libXdmcp
-    xorg.xcbutilerrors
-    xwayland
+  CXXFLAGS = [
+    ''-DNIXPKGS_XWAYLAND=\"${lib.getExe xwayland}\"''
   ];
 
-  CXXFLAGS = [ ''-DNIXPKGS_XWAYLAND=\"${lib.getBin xwayland}/bin/Xwayland\"'' ];
+  postInstall = ''
+    # Some package(s) refer to these service types by the wrong name.
+    # I would prefer to patch those packages, but I cannot find them!
+    ln -s ''${!outputBin}/share/kservicetypes5/kwineffect.desktop \
+          ''${!outputBin}/share/kservicetypes5/kwin-effect.desktop
+    ln -s ''${!outputBin}/share/kservicetypes5/kwinscript.desktop \
+          ''${!outputBin}/share/kservicetypes5/kwin-script.desktop
+  '';
 
   meta = with lib; {
     description = "Qt/C++ library wrapping libwayland";
