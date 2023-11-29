@@ -2,7 +2,6 @@
 , lib
 , fetchFromGitLab
 , extra-cmake-modules
-, wrapQtAppsHook
 , kdoctools
 , fetchpatch
 , libepoxy
@@ -57,12 +56,14 @@
 , kxmlgui
 , plasma-framework
 , libqaccessibilityclient
+, kdisplay
 , wrapland
 , disman
 , wlroots
 , pixman
 , kirigami2
-, xorg
+, libXdmcp
+, xcbutilerrors
 , valgrind
 , vulkan-loader
 , seatd
@@ -81,8 +82,7 @@ mkDerivation {
     sha256 = "0asy6z4crcclbq5r30mid6rp5xyzq67a4i2sb385m0yiwcd4h91d";
   };
 
-  nativeBuildInputs = [ extra-cmake-modules wrapQtAppsHook kdoctools ];
-
+  nativeBuildInputs = [ extra-cmake-modules kdoctools ];
   buildInputs = [
     libepoxy
     lcms2
@@ -139,13 +139,14 @@ mkDerivation {
     plasma-framework
     libqaccessibilityclient
 
+    kdisplay    
     wrapland
     disman
     wlroots
     pixman
     kirigami2
-    xorg.libXdmcp
-    xorg.xcbutilerrors
+    libXdmcp
+    xcbutilerrors
     valgrind
     vulkan-loader
     seatd
@@ -153,7 +154,15 @@ mkDerivation {
   outputs = [ "out" "dev" ];
 
   postPatch = ''
-    patchShebangs src/effects/strip-effect-metadata.py
+    patchShebangs effect/effects/strip-effect-metadata.py
+    # TODO: add a patch if this is my fault, open an issue if it's their fault
+    sed -i '540i \ \ \ \ KF5::Plasma' CMakeLists.txt
+
+    # /build/source/render/backend/wlroots/texture_update.h:24:10: fatal error: drm_fourcc.h: No such file or directory
+    #    24 | #include <drm_fourcc.h>
+    #       |          ^~~~~~~~~~~~~~
+    substituteInPlace render/backend/wlroots/texture_update.h \
+      --replace "<drm_fourcc.h>" "<libdrm/drm_fourcc.h>"
   '';
 
   patches = [
@@ -177,7 +186,7 @@ mkDerivation {
   '';
 
   meta = with lib; {
-    description = "Qt/C++ library wrapping libwayland";
+    description = "Wayland compositor and X11 window manager";
     inherit (src.meta) homepage;
     license = licenses.lgpl21Plus;
     platforms = platforms.linux;
